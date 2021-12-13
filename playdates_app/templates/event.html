@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1gLCuxp4_RtE7LgfcqdJwTXLMPz8nB5c&callback=initMap"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <title>Event Details</title>
+    <style>
+      #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Hello {{this_user.first_name}}! These are the event details</h1>
+      <div class="links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/">Logout</a>
+      </div>
+    </div>
+    <h1>Event #{{event.id}}</h1>
+    <h4>Title</h4>
+    <p>{{event.title}}</p>
+    <h4>Description</h4>
+    <p>{{event.description}}</p>
+    <h4>Location</h4>
+    <p id="location">{{event.location}}</p>
+    <h4>Date</h4>
+    <p>{{event.date}}</p>
+    <h4>Duration</h4>
+    <p>{{event.duration}}</p>
+    <h4>Posted by:</h4>
+    <p>{{event.created_by.first_name}}</p>
+    <h4>Posted on:</h4>
+    <p>{{event.updated_at}}</p>
+    <h4>Categories:</h4>
+    <ul>
+      {% for cat in job.categories.all %}
+      <li>{{cat.name}}</li>
+      {% endfor %}
+    </ul>
+
+    {% if this_user not in event.added_by.all %}
+    <a href="/{{event.id}}/add" class="btn btn-primary">Add to My List</a>
+    {% else %}
+    <a href="/{{event.id}}/remove" class="btn btn-primary">Cancel</a>
+    {% endif %}
+
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode(
+          { address: document.getElementById("location").innerHTML },
+          function (results, status) {
+            if (status == "OK") {
+              const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: results[0].geometry.location,
+              });
+              // map.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location,
+              });
+            } else {
+              alert(
+                "Geocode was not successful for the following reason: " + status
+              );
+            }
+          }
+        );
+        // The location of Uluru
+        // const uluru = { lat: -25.344, lng: 131.036 };
+        // The map, centered at Uluru
+        // const map = new google.maps.Map(document.getElementById("map"), {
+        //   zoom: 4,
+        //   center: uluru,
+        // });
+        // The marker, positioned at Uluru
+        // const marker = new google.maps.Marker({
+        //   position: uluru,
+        //   map: map,
+        // });
+      }
+    </script>
+  </body>
+</html>

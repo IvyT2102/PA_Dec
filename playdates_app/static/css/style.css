@@ -1,0 +1,43 @@
+label {
+    /* display: inline-block; */
+    width: 30%;
+    font-weight: bolder;
+    font-size: x-large;
+    color:royalblue;
+}
+
+body {
+    background-color: rgb(251, 200, 105);
+    background-image: url("static/img/banner.jpg");
+    /* background-image: linear-gradient(to bottom right, #ffc75f, #f9f871,#ff6f91, #845ec2); */
+}
+.form-group {
+    width: 60%;
+}
+.header{
+    display: inline-block;
+}
+
+.form-group>* {
+    display: inline-block;
+    margin: 10px;
+    width: 70%;
+}
+
+
+.col-6 {
+    /* padding-left: 45px; */
+    margin: 20px;
+    width: 40%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.green {
+    color: green;
+}
+
+li.error {
+    color: red;
+    font-weight: bold;
+}

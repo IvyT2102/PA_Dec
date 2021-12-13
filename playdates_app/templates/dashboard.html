@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-light bg-primary sticky-top">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-brand mb-0 h1">Welcome {{this_user.first_name}}</span>
+            <a class="navbar-brand" href="/dashborad">Home</a>
+            <a class="navbar-brand" href="/new">New Event!</a>
+            <a class="navbar-brand" href="/new">Services</a>
+            <a class="navbar-brand" href="/new">Contact</a>
+            <a class="navbar-brand" href="/">Logout</a>
+            
+        </nav>
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ul class="carousel-indicators">
+                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+            </ul>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="{% static '/css/img/hiking1.png' %}">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>First slide label</h5>
+                    <p>Some representative placeholder content for the first slide.</p>
+                  </div>
+                </div>
+                <div class="carousel-item active">
+                    <img src="css/img/beach.png">
+                </div>
+                <div class="carousel-item active">
+                    <img src="css/img/moms.png">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <h1><a href="/new">Add An Event</a></h1>
+                <h1>Let Have Some Funs</h1>
+                <table class='table table-success'>
+                    <thead>
+                        <tr>
+                            <th>Events</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events  %}
+                            <tr>
+                                <td>{{event.title}}</td>
+                                <td>{{event.location}}</td>
+                                <td>{{event.date}}</td>
+                                <td>
+                                    <a href="/{{event.id}}">View</a> |
+                                    <a href="/{{event.id}}/add">Add</a>| 
+                                {% if this_user.id == event.created_by.id  %}
+                                    <a href="/{{event.id}}/delete">Delete</a>| 
+                                    <a href="/{{event.id}}/edit">Edit</a> 
+                                {% endif %}
+                                </td>
+                            </tr>
+                            
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <h1>{{this_user.first_name}}'s Lists</h1>
+                <table class='table table-warning'>
+                    <thead>
+                        <tr>
+                            <td>Events</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events  %}
+                        {% if this_user in event.added_by.all %}
+                        <tr>
+                            <td>{{event.title}}</td>
+                            <td>
+                                <a href="/{{event.id}}">View</a>|
+                                <a href="/{{event.id}}/delete">Done</a>|
+                                <a href="/{{event.id}}/remove">Cancel</a>
+                                
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
